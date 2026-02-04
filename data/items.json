@@ -1,0 +1,5 @@
+{
+  "sproutgrass_block": {"id": "sproutgrass_block", "name": "Sproutgrass Block", "stack": 99},
+  "loam_block": {"id": "loam_block", "name": "Loam Block", "stack": 99},
+  "stone_block": {"id": "stone_block", "name": "Stone Block", "stack": 99}
+}
