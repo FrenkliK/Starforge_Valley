@@ -1,0 +1,10 @@
+{
+  "air": {"id": 0, "name": "Air", "color": "#00000000"},
+  "stone": {"id": 4, "name": "Stone", "color": "#6f6f6f"},
+  "loam": {"id": 3, "name": "Loam", "color": "#8b6a47"},
+  "sproutgrass": {"id": 2, "name": "Sproutgrass", "color": "#5da85f"},
+  "water": {"id": 6, "name": "Water", "color": "#3b6fa1"},
+  "ember_ore": {"id": 7, "name": "Ember Ore", "color": "#b1583b"},
+  "azure_ore": {"id": 8, "name": "Azure Ore", "color": "#3f8bb4"},
+  "prism_ore": {"id": 9, "name": "Prism Ore", "color": "#8b5ebd"}
+}
