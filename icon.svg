@@ -1,6 +1,19 @@
-<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
-  <rect width="128" height="128" fill="#1c1f26"/>
-  <rect x="16" y="24" width="96" height="80" rx="12" fill="#2f6b4f"/>
-  <rect x="24" y="32" width="80" height="32" rx="6" fill="#7dc072"/>
-  <rect x="24" y="68" width="80" height="28" rx="6" fill="#c7a46d"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101d34"/>
+      <stop offset="1" stop-color="#263c61"/>
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#88d184"/>
+      <stop offset="1" stop-color="#4d9d70"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#sky)"/>
+  <path d="M20 76 48 48l16 14 21-25 24 31v35H20z" fill="#334d68"/>
+  <path d="m17 79 28-18 19 10 20-21 28 22v31H17z" fill="url(#grass)"/>
+  <path d="M17 83h95v20H17z" fill="#9b7655"/>
+  <path d="m64 19 4.2 9.8L79 33l-10.8 4.2L64 48l-4.2-10.8L49 33l10.8-4.2z" fill="#f6d77b"/>
+  <circle cx="31" cy="39" r="2" fill="#e9f3ff" opacity=".85"/>
+  <circle cx="97" cy="28" r="1.7" fill="#e9f3ff" opacity=".75"/>
 </svg>

@@ -3,22 +3,25 @@ extends Node3D
 const CHUNK_SIZE := Vector3i(16, 64, 16)
 const BLOCK_AIR := 0
 
-@export var render_distance := 3
+@export_range(1, 6, 1) var render_distance := 2
 @export var world_seed := 1337
 
 var blocks_data := {}
 var chunks := {}
-var noise := OpenSimplexNoise.new()
+var noise := FastNoiseLite.new()
 var player_ref: Node3D
-var chunk_cache := {}
+var last_player_chunk := Vector3i(2147483647, 0, 2147483647)
 
 func _ready() -> void:
     add_to_group("world")
     blocks_data = _load_block_data()
     noise.seed = world_seed
-    noise.octaves = 4
-    noise.period = 64.0
-    noise.persistence = 0.45
+    noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
+    noise.frequency = 0.015
+    noise.fractal_type = FastNoiseLite.FRACTAL_FBM
+    noise.fractal_octaves = 4
+    noise.fractal_lacunarity = 2.0
+    noise.fractal_gain = 0.45
     player_ref = get_tree().get_first_node_in_group("player")
     if player_ref == null:
         player_ref = get_parent().get_node_or_null("Player")
@@ -45,6 +48,9 @@ func _refresh_chunks(force: bool) -> void:
     if player_ref == null:
         return
     var player_chunk := _world_to_chunk(player_ref.global_position)
+    if not force and player_chunk == last_player_chunk:
+        return
+    last_player_chunk = player_chunk
     for x in range(player_chunk.x - render_distance, player_chunk.x + render_distance + 1):
         for z in range(player_chunk.z - render_distance, player_chunk.z + render_distance + 1):
             var key := Vector3i(x, 0, z)
@@ -89,15 +95,13 @@ class Chunk:
     var chunk_size := Vector3i(16, 64, 16)
     var blocks := []
     var blocks_data := {}
-    var noise: OpenSimplexNoise
+    var noise: FastNoiseLite
     var mesh_instance: MeshInstance3D
     var collider: StaticBody3D
 
-    func _init() -> void:
+    func generate() -> void:
         blocks.resize(chunk_size.x * chunk_size.y * chunk_size.z)
         blocks.fill(BLOCK_AIR)
-
-    func generate() -> void:
         _generate_blocks()
         _build_mesh()
 
@@ -106,19 +110,16 @@ class Chunk:
             for z in range(chunk_size.z):
                 var world_x := chunk_coord.x * chunk_size.x + x
                 var world_z := chunk_coord.z * chunk_size.z + z
-                var height := int(18 + noise.get_noise_2d(world_x, world_z) * 10.0)
-                for y in range(chunk_size.y):
-                    var index := _index(x, y, z)
-                    if y > height:
-                        blocks[index] = 0
-                    elif y == height:
-                        blocks[index] = 2 # grass
-                    elif y > height - 3:
-                        blocks[index] = 3 # loam
-                    else:
-                        blocks[index] = 4 # stone
-                if height < 12:
-                    for y in range(height + 1, 12):
+                var height := clampi(int(20 + noise.get_noise_2d(world_x, world_z) * 13.0), 4, chunk_size.y - 2)
+                for y in range(height + 1):
+                    var block_id := 4 # stone
+                    if y == height:
+                        block_id = 2 # grass
+                    elif y >= height - 3:
+                        block_id = 3 # loam
+                    blocks[_index(x, y, z)] = block_id
+                if height < 10:
+                    for y in range(height + 1, 11):
                         blocks[_index(x, y, z)] = 6 # water
 
     func _build_mesh() -> void:
@@ -157,9 +158,18 @@ class Chunk:
         arrays[Mesh.ARRAY_NORMAL] = normals
         arrays[Mesh.ARRAY_COLOR] = colors
         arrays[Mesh.ARRAY_INDEX] = indices
+        if vertices.is_empty():
+            mesh_instance = MeshInstance3D.new()
+            mesh_instance.position = Vector3(chunk_coord.x * chunk_size.x, 0, chunk_coord.z * chunk_size.z)
+            add_child(mesh_instance)
+            return
         mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
         mesh_instance = MeshInstance3D.new()
         mesh_instance.mesh = mesh
+        var material := StandardMaterial3D.new()
+        material.vertex_color_use_as_albedo = true
+        material.roughness = 1.0
+        mesh_instance.material_override = material
         mesh_instance.position = Vector3(chunk_coord.x * chunk_size.x, 0, chunk_coord.z * chunk_size.z)
         add_child(mesh_instance)
         if mesh.get_surface_count() > 0:

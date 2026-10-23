@@ -1,6 +1,0 @@
-{
-  "name": "@silent-link/shared",
-  "private": true,
-  "type": "module",
-  "main": "src/index.ts"
-}

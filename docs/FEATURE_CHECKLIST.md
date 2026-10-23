@@ -1,38 +1,31 @@
-# Feature Checklist
+# Development roadmap
 
-## Phase 1 (Core Systems)
-- [x] Procedural chunked world generation (OpenSimplex noise).
-- [x] Chunk streaming around player.
-- [x] Basic block meshing with face culling.
-- [x] First-person controller with jump/sprint.
-- [x] Block break/place via raycast.
-- [ ] Biome system with 3+ biomes.
-- [ ] Ores, caves, trees, lakes beyond basic water.
-- [ ] Lighting (sunlight + emissive).
-- [ ] Inventory + hotbar.
-- [ ] Tools with durability and tiers.
-- [ ] Crafting (2x2, 3x3) and processing station.
-- [ ] Health, hunger, stamina.
-- [ ] Day/night cycle.
-- [ ] Passive/hostile AI and spawning.
-- [ ] Combat and armor.
-- [ ] Farming, fluids, fire.
-- [ ] Save/load with modified block deltas and player state.
-- [ ] Options menu and keybind editing.
-- [ ] Debug overlay.
-- [ ] New world creation UI with seed input.
+Starforge Valley is an early, playable systems prototype. This checklist reflects the current scope; unchecked items are plans, not completed features.
 
-## Phase 2 (Expansion)
-- [ ] Additional biomes and structures.
-- [ ] Weather and temperature.
-- [ ] Ranged weapons, shields/dodge, status effects, brewing.
-- [ ] Advancements UI and progress tracking.
-- [ ] Runic Imprinter upgrade system.
-- [ ] Logic/automation blocks.
-- [ ] Settlements and trading.
-- [ ] Dungeons and bosses.
-- [ ] Alternate realm travel.
-- [ ] Transportation, map, beacons.
-- [ ] Multiplayer-ready architecture.
-- [ ] Modding/data packs with schemas.
-- [ ] Polish (particles, accessibility, recovery).
+## Playable prototype
+
+- [x] Seeded procedural terrain using FastNoiseLite.
+- [x] Stream chunks around the player.
+- [x] Build voxel meshes with hidden interior faces removed.
+- [x] Add collision for generated terrain.
+- [x] First-person movement, mouse look, jumping, and sprinting.
+- [x] Break and place blocks with a camera raycast.
+- [x] Basic lighting, reticle, and controls HUD.
+- [ ] Rebuild adjacent chunk faces cleanly at chunk borders.
+- [ ] Add a small automated validation suite for terrain and block coordinates.
+
+## Next up
+
+- [ ] Hotbar and block selection.
+- [ ] Save/load world seed, player position, and edited block deltas.
+- [ ] Terrain variety: trees, caves, ore deposits, and more coherent shorelines.
+- [ ] Options menu, input remapping, and accessibility settings.
+- [ ] Profile chunk generation and rebuilds; move expensive work off the main frame where practical.
+
+## Later ideas
+
+- [ ] Biomes and points of interest.
+- [ ] Inventory, crafting, and tool progression.
+- [ ] Health, survival needs, and creatures.
+- [ ] Day/night cycle and weather.
+- [ ] Mod-friendly data definitions and world-generation settings.

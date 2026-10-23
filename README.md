@@ -1,68 +1,51 @@
-# Starforge Valley (Voxel Survival Sandbox)
+# Starforge Valley
 
-## How to run
-1. Install **Godot 4.2+**.
-2. Open the project folder in Godot (`/workspace/newgame`).
-3. Press **Play** to run `Main.tscn`.
+**A first-person voxel survival sandbox built with Godot 4.** Explore a procedurally generated landscape, shape it block by block, and build a place of your own.
 
-## Current milestone
-**M1 (Voxel world + meshing + player + place/break) is implemented.**
+> Early prototype. World generation, chunk streaming, first-person movement, and basic block placement and removal are implemented. Inventory, crafting, survival systems, and saving are planned work.
+
+## Run it
+
+1. Install [Godot 4.2 or later](https://godotengine.org/download/).
+2. Clone this repository and open the project folder in Godot.
+3. Open `scenes/Main.tscn` and press **F6**, or press **F5** to run the configured main scene.
+
+No external packages are required for the game.
 
 ## Controls
-- WASD: Move
-- Mouse: Look
-- Space: Jump
-- Shift: Sprint
-- E: Inventory (placeholder)
-- Left Mouse: Break block
-- Right Mouse: Place block
-- Esc: Pause menu (placeholder)
 
-## Repository layout
-- `world/`: world generation, chunk streaming, and block storage
-- `systems/`: player controller and core gameplay systems
-- `rendering/`: rendering helpers (future)
-- `entities/`: creatures and AI (future)
-- `ui/`: HUD and menus (future)
-- `data/`: data-driven definitions (blocks, items, recipes)
-- `tests/`: validation scripts (placeholder)
-- `docs/`: run notes and feature checklists
+| Input | Action |
+| --- | --- |
+| W / A / S / D | Move |
+| Mouse | Look around |
+| Space | Jump |
+| Shift | Sprint |
+| Left mouse | Break the targeted block |
+| Right mouse | Place a grass block beside the targeted face |
+| Escape | Release the mouse; press again to recapture |
 
----
+## Current features
 
-# Silent-Link RPG Prototype (Node.js)
+- Seeded terrain built from **FastNoiseLite**.
+- Streamed 16 × 16 chunks around the player.
+- Face-culled voxel meshes with block-specific colors and collision.
+- First-person movement with sprinting, jumping, and block interaction.
+- Small, data-driven block palette in `data/blocks.json`.
 
-This repository also contains a small, runnable prototype that demonstrates silent linking between players in a single-player RPG experience. The prototype lives in `/server`, `/client`, and `/shared`.
+## Project structure
 
-## Run the prototype
-
-```bash
-npm install
-npm run dev
+```text
+data/       Block definitions and future gameplay data
+docs/       Development roadmap
+scenes/     Godot scenes
+systems/    Player controller and gameplay systems
+world/      Terrain generation, chunks, and block meshing
 ```
 
-In another terminal, start clients:
+## Roadmap
 
-```bash
-npm run client -- --name Alice
-npm run client -- --name Bob
-npm run client -- --name Cara
-```
+See [`docs/FEATURE_CHECKLIST.md`](docs/FEATURE_CHECKLIST.md) for the prototype roadmap. Planned next steps include a usable hotbar, world persistence, richer terrain features, and a small automated validation suite.
 
-Optional flags:
-- `--optOut` to disable linking for a client.
-- `--url ws://localhost:8080` to point at another server.
+## Development notes
 
-Server environment toggles:
-- `ENABLE_LINKING=0` disables convergence entirely.
-- `ENABLE_BOTS=0` disables bot spawning.
-
-## Tests
-
-```bash
-npm run test
-```
-
-## Design notes
-
-Silent linking is implemented by moving players between instances and only sending normal `WorldState` + entity join/leave updates. No explicit matchmaking event is emitted, so other entities appear like NPCs while still using proximity voice. Safehouses are excluded from linking, and players can opt out per-session or use the `SeverLink` item to return to isolation. These toggles are intentionally surfaced to keep the system ethical and avoid coercive multiplayer behavior.
+This project is an experimental game prototype. Saves and edits are not persisted yet, and chunk meshes are rebuilt when a block changes. Performance and gameplay systems will continue to evolve as the prototype grows.

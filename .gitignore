@@ -1,4 +1,13 @@
-node_modules/
-**/node_modules/
-**/dist/
+# Godot editor cache and imported assets
+.godot/
+.import/
+
+# Exported builds
+/builds/
+/exports/
+
+# OS and editor noise
 .DS_Store
+Thumbs.db
+*.tmp
+*.swp
